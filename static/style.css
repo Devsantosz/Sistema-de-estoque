@@ -115,6 +115,9 @@ button.secondary {
   padding-bottom: 2px;
 }
 
+.res {
+    text-align: center;
+}
 
 button:hover { 
   background-color: #000000;
