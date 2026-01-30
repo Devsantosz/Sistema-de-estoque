@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="/static/style.css">
+  <title>Dashboard - Estoque</title>
+</head>
+<body>
+  <header class="topbar">
+    <h2>Estoque - Loja Purplue</h2>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h3>Adicionar produto</h3>
+      <form method="post" action="/add" class="row">
+        <input name="name" placeholder="Nome do produto" required>
+        <input name="qty" type="number" placeholder="Qtd" required>
+        <button>Adicionar</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h3>Produtos</h3>
+
+      <ul class="list">
+         {% for p in products %}
+          <li class="item">
+            <div>
+              <p>Produto</p>
+              <p>{{ p["name"] }}</p>
+            </div>
+            <div>
+                <p>Quantidade:</p>
+                <p">{{ p["quantity"] }}</p>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
