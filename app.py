@@ -39,21 +39,23 @@ def init_db():
 def home():
     con = get_db()
     cur = con.cursor()
-    cur.execute("SELECT name, quantity from products order by id")
+    cur.execute("SELECT name, quantity FROM products ORDER BY id DESC")
+    products = cur.fetchall()
     con.close()
-    return render_template("dashboard.html")
+    return render_template("dashboard.html", products=products)
 
-@app.route("/add")
+
+@app.post("/add")
 def adicionar():
-    name = request.form["nome"].strip()
+    name = request.form["name"].strip()
     qty = int(request.form["qty"])
 
     con = get_db()
-    cur = con.cursor
+    cur = con.cursor()
     cur.execute("INSERT INTO products (name, quantity) VALUES (?, ?)", (name, qty))
 
     con.commit()
-    con.close
+    con.close()
     return redirect("/")
 
 if __name__ == "__main__":
