@@ -8,31 +8,31 @@
 </head>
 <body>
   <header class="topbar">
-    <h2>Estoque - Loja Purplue</h2>
+    <h2> Loja Purplue (ESTOQUE)</h2>
   </header>
 
   <main class="container">
-    <section class="card">
+    <section class="card" id="pesq">
       <h3>Adicionar produto</h3>
       <form method="post" action="/add" class="row">
         <input name="name" placeholder="Nome do produto" required>
-        <input name="qty" type="number" placeholder="Qtd" required>
+        <input name="qty" type="number" placeholder="Quantidade" required>
         <button>Adicionar</button>
       </form>
     </section>
 
-    <section class="card">
+    <section class="card" id="list-prod">
       <h3>Produtos</h3>
 
       <ul class="list">
          {% for p in products %}
           <li class="item">
             <div>
-              <p>Produto</p>
+              <p class="titulo">Produto:</p>
               <p>{{ p["name"] }}</p>
             </div>
             <div>
-                <p>Quantidade:</p>
+                <p class="titulo">Quantidade:</p>
                 <p">{{ p["quantity"] }}</p>
             </div>
           </li>
@@ -40,6 +40,10 @@
       </ul>
     </section>
   </main>
+  <footer>
+    <p>Sistema de estoque com HTML,CSS,PYTHON e SQlite.</p>
+    <p>Desenvolvido por <a href="https://github.com/Devsantosz" target="_blank">DEVSANTOSZ </a>&copy</p>
+  </footer>
   <script src="app.py"></script>
 </body>
 </html>
