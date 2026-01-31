@@ -54,7 +54,7 @@ input {
 }
 
 button {
-  margin-top: 5px;
+  margin-top: 0px;
   padding: 10px 10px;
   border: 0;
   border-radius: 8px;
@@ -64,12 +64,6 @@ button {
   font-weight: 700;
   margin-left: auto;
 }
-
-button.secondary {
-  background: #e8e8f3;
-  color: #222;
-}
-
 .error {
    color: #b00020; 
    margin-top: 10px; }
@@ -98,16 +92,41 @@ button.secondary {
   list-style: none; 
   padding: 0; 
   margin: 0;
-  width: 100%; 
+  max-width: 100%;
+  
+  overflow-wrap: break-word;
+  overflow: hidden; 
+  overflow-y: scroll;
 }
 
-.item {
-  display:flex;
-  justify-content: space-between;
-  align-items:center;
-  padding: 12px 0;
-  border-bottom: 1px solid #eee;
+.item{
+  border: 1px solid black;
+  border-radius: 12px;
+  padding: 8px;
+  margin: 10px 0px;
+  display: grid;
+  grid-template-columns: 1fr 140px 120px; /* produto | qtd | ações */
+  align-items: center;
+  gap: 10px;
 }
+
+
+.item .qtd{
+  text-align: center;
+}
+
+.item .acoes{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.item > div:last-child{
+  display: flex;
+  flex-direction: column;
+  align-items: center;   
+  min-width: 120px;      
+}
+
 
 .titulo{
   font-weight: bolder;
@@ -119,10 +138,10 @@ button.secondary {
     text-align: center;
 }
 
-button:hover { 
-  background-color: #000000;
-  color: #ffffff;
-  cursor: not-allowed; 
+button:hover {
+  background-color: #000;
+  color: #fff;
+  cursor: pointer;
   transition: 0.3s;
 }
 
