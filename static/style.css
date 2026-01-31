@@ -11,12 +11,20 @@ body{
   background: #f6f6fb;
 }
 
+.topbar {
+  text-align: center;
+  color: rgb(0, 0, 0);
+  padding: 10px;
+  background-color: #ffffff;
+  border-bottom: 1px solid black;
+}
+
 main{
   display: grid;
-  height: calc(100vh - 108px);
+  height: calc(100vh - 105px);
   grid-template-columns: auto 1fr auto;
   grid-template-rows: 30% 1fr;
-  background-color: #000000;
+  background-color: #ffffff;
   padding: 15px;
 }
 
@@ -28,8 +36,8 @@ main{
   margin: 5px auto;
   background: white;
   padding: 22px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 15px rgb(150, 38, 255);
+  border-radius: 4px;
+  box-shadow: 0px 0px 2px rgb(0, 0, 0);
 }
 
 #pesq{
@@ -68,13 +76,7 @@ button {
    color: #b00020; 
    margin-top: 10px; }
 
-.topbar {
-  text-align: center;
-  color: white;
-  padding: 10px;
-  background-color: #37105e;
-  box-shadow: 0 6px 14px rgba(0,0,0,.06);
-}
+
 
 .row {
   display:flex;
@@ -85,7 +87,7 @@ button {
 .row input { 
   background-color: rgb(233, 231, 227);
   width: 100%; 
-  min-width: 120px; 
+  min-width: 100px; 
 }
 
 .list {
@@ -94,9 +96,9 @@ button {
   margin: 0;
   max-width: 100%;
   
-  overflow-wrap: break-word;
-  overflow: hidden; 
-  overflow-y: scroll;
+  
+  max-height: 50VH; 
+  overflow-y: auto; 
 }
 
 .item{
@@ -107,7 +109,6 @@ button {
   display: grid;
   grid-template-columns: 1fr 140px 120px; /* produto | qtd | ações */
   align-items: center;
-  gap: 10px;
 }
 
 
@@ -123,8 +124,7 @@ button {
 .item > div:last-child{
   display: flex;
   flex-direction: column;
-  align-items: center;   
-  min-width: 120px;      
+  align-items: center;     
 }
 
 
@@ -147,25 +147,21 @@ button:hover {
 
 footer{
   padding: 10px;
-  color: #e8e8f3;
-  background-color: #37105e;
+  color: #ffffff;
+  background-color: #000000;
   text-align: center;
 
   font-family: 'Times New Roman', Times, serif;
-  font-size: 0.9em;
-}
-
-footer p{
-  padding: 2px;
+  font-size: 1em;
 }
 
 footer p a{
-  color: white;
+  color: rgb(255, 255, 255);
   text-decoration: none;
 }
 
 footer p a:hover{
-  color: yellow;
+  color: #5a189a;
   transition: 0.5s;
 }
 
@@ -183,5 +179,9 @@ footer p a:hover{
     grid-column: 3;
     grid-row: 1 / 3;
     transition: 0.8s ease;
+  }
+
+  .list{
+    max-height: 76vh;
   }
 }
