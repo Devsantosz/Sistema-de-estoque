@@ -49,7 +49,19 @@ def adicionar():
 
     con = get_db()
     cur = con.cursor()
-    cur.execute("INSERT INTO products (name, quantity) VALUES (?, ?)", (name, qty))
+
+
+    cur.execute("SELECT id, quantity FROM products WHERE name = ?", (name,))
+    product = cur.fetchone()
+    if product:
+        new_qty = product["quantity"] + qty
+        cur.execute("UPDATE products SET quantity = ? WHERE id = ?",
+            (new_qty, product["id"]))
+    else:
+        cur.execute(
+            "INSERT INTO products (name, quantity) VALUES (?, ?)",
+            (name, qty)
+        )
     con.commit()
     con.close()
     return redirect("/")
