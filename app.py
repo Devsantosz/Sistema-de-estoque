@@ -22,6 +22,9 @@ def init_db():
         CREATE TABLE IF NOT EXISTS products (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
+            codigo TEXT NOT NULL UNIQUE,
+            marca TEXT NOT NULL,
+            categoria TEXT NOT NULL,
             quantity INTEGER NOT NULL DEFAULT 0
         );
     """)
@@ -32,7 +35,7 @@ def init_db():
 def home():
     con = get_db()
     cur = con.cursor()
-    cur.execute("SELECT id, name, quantity FROM products ORDER BY id DESC")
+    cur.execute("SELECT id, name, codigo, marca, categoria, quantity FROM products ORDER BY id DESC")
     products = cur.fetchall()
     con.close()
     return render_template("dashboard.html", products=products)
@@ -41,27 +44,39 @@ def home():
 
 @app.post("/add")
 def adicionar():
-    name = request.form["name"].strip()
-    if not name:
+    name = request.form.get("name", "").strip()
+    codigo = request.form.get("codigo", "").strip()
+    marca = request.form.get("marca", "").strip()
+    categoria = request.form.get("categoria", "").strip()
+
+    if not name or not codigo or not marca or not categoria:
         return redirect("/")
 
-    qty = max(0, int(request.form["qty"]))
+    try:
+        qty = int(request.form.get("qty", 0))
+    except ValueError:
+        qty = 0
+    qty = max(0, qty)
 
     con = get_db()
     cur = con.cursor()
 
-
-    cur.execute("SELECT id, quantity FROM products WHERE name = ?", (name,))
+    # agora o identificador é o codigo (UNIQUE)
+    cur.execute("SELECT id, quantity FROM products WHERE codigo = ?", (codigo,))
     product = cur.fetchone()
+
     if product:
         new_qty = product["quantity"] + qty
-        cur.execute("UPDATE products SET quantity = ? WHERE id = ?",
-            (new_qty, product["id"]))
+        cur.execute(
+            "UPDATE products SET name = ?, marca = ?, categoria = ?, quantity = ? WHERE id = ?",
+            (name, marca, categoria, new_qty, product["id"])
+        )
     else:
         cur.execute(
-            "INSERT INTO products (name, quantity) VALUES (?, ?)",
-            (name, qty)
+            "INSERT INTO products (name, codigo, marca, categoria, quantity) VALUES (?, ?, ?, ?, ?)",
+            (name, codigo, marca, categoria, qty)
         )
+
     con.commit()
     con.close()
     return redirect("/")

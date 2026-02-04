@@ -16,15 +16,18 @@
     <section class="card" id="pesq">
       <h3>Adicionar produto</h3>
       <form method="post" action="/add" class="row">
-        <input name="name" placeholder="Nome do produto" required>
-        <input name="qty" type="number" placeholder="Quantidade" required>
-        <button>Adicionar</button>
+          <input name="name" placeholder="Nome do produto" required>
+          <input name="codigo" placeholder="Codigo" type="text" required>
+          <input name="marca" placeholder="Marca do produto" type="text" required>
+          <input name="categoria" placeholder="Categoria" type="text" required>
+          <input name="qty" type="number" placeholder="Quantidade" required min="0" value="0">
+          <button type="submit">Adicionar</button>
       </form>
+
     </section>
 
     <section class="card" id="list-prod">
       <h3>Produtos</h3>
-
         <ul class="list">
           {% for p in products %}
             <li class="item">
@@ -32,6 +35,22 @@
                 <p class="titulo">Produto:</p>
                 <p>{{ p["name"] }}</p>
               </div>
+
+              <div>
+                <p class="titulo">Código:</p>
+                <p>{{ p["codigo"] }}</p>
+              </div>
+
+              <div>
+                <p class="titulo">Marca:</p>
+                <p>{{ p["marca"] }}</p>
+              </div>
+
+              <div>
+                <p class="titulo">Categoria:</p>
+                <p>{{ p["categoria"] }}</p>
+              </div>
+
 
               <div class="qtd">
                 <p class="titulo">Quantidade:</p>
