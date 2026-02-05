@@ -15,7 +15,7 @@ body{
 .topbar {
   text-align: center;
   color: #fff;
-  padding: 18px 10px;
+  padding: 10px;
   background: linear-gradient(90deg, #5a189a, #7b2cbf);
   border-bottom: none;
 }
@@ -26,7 +26,7 @@ main{
   grid-template-columns: 1fr;
   gap: 18px;
   padding: 18px;
-  min-height: calc(100vh - 105px);
+  min-height: calc(100vh - 95px);
   background: #f6f6fb;
 }
 
@@ -61,15 +61,16 @@ main{
 }
 
 /* ===== Form ===== */
-.row {
+.row{
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 160px; /* coluna direita fixa */
   gap: 12px;
 }
 
 /* Faz "Nome do produto" ocupar a linha inteira */
 .row input[name="name"]{
   grid-column: 1 / -1;
+   max-width: none; /* deixa a grid controlar */
 }
 
 /* Quantidade menor pra ficar com cara de sistema */
@@ -139,12 +140,21 @@ button:hover {
   background: #fafafa;
   border: 1px solid #ececf2;
   border-radius: 14px;
-  padding: 14px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 130px 120px;
-  align-items: center;
+  display: flex;
+  justify-content: space-between;
   gap: 10px;
+  flex-flow: row wrap;
+  align-items: center;
+  padding: 10px;
   transition: 0.2s ease;
+}
+
+.item{
+  min-width: 0;
+}
+.item .info{
+  min-width: 0;
+  flex: 1;
 }
 
 .item:hover{
@@ -152,12 +162,6 @@ button:hover {
   transform: translateY(-2px);
 }
 
-/* Textos dentro (evita estourar) */
-.item div p{
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 
 .titulo{
   font-weight: 800;
@@ -169,13 +173,14 @@ button:hover {
 }
 
 .item .qtd{
+  margin: 0px 5px ;
   text-align: center;
 }
 
 .res {
+  
   text-align: center;
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 15px;
   color: #000000;
 }
 
@@ -187,9 +192,15 @@ button:hover {
 
 /* Botão remover menor (fica mais elegante) */
 .item .acoes button{
-  padding: 9px 12px;
+  padding: 12px;
   border-radius: 10px;
 }
+
+button:focus-visible, input:focus-visible{
+  outline: 3px solid rgba(123,44,191,0.35);
+  outline-offset: 2px;
+}
+
 
 /* ===== Footer ===== */
 footer{
