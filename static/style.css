@@ -18,6 +18,41 @@ body{
   padding: 10px;
   background: linear-gradient(90deg, #5a189a, #7b2cbf);
   border-bottom: none;
+  display: flex;
+
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-content: center;
+  justify-items: center;
+  align-items: center;
+}
+
+.topbar h2 {
+  font-size: 1.4em;
+  font-weight: 700;
+}
+
+.conta{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.conta h1{
+  font-size: 1.2em;
+  font-weight: 400;
+}
+
+.conta a{
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9em;
+  margin-left: 15px;
+}
+
+.conta a:hover{
+  text-decoration: underline;
 }
 
 /* ===== Layout principal ===== */
