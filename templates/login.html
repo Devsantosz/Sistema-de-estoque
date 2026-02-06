@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de login</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url(../static/estoque.jpg);
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .login-card {
+            background-color: rgba(255, 255, 255, 0.192);
+            padding: 20px;
+            border: 1px solid #cccccc56;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .login-card h1{
+            text-align: center;
+            margin-bottom: 20px;
+            color: #000000;
+        }
+
+        .login-card label {
+            margin: auto;
+            display: block;
+            color: #000000;
+        }
+
+        .login-card input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #00000041;
+            border-radius: 3px;
+        }
+
+        .login-card button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #5a189a;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .login-card button:hover {
+            background-color: #000000;
+            transition: 0.4s;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section class="login-card">
+            <h1>Login</h1>
+            <form method="post">
+                <label for="username">Usuário:</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="password">Senha:</label>
+                <input type="password" id="password" name="password" required>
+
+                <button type="submit" formaction="/login">Entrar</button>
+                <button type="submit" formaction="/register">Criar conta</button>
+            </form>
+
+        </section>
+    </main>
+</body>
+</html>
