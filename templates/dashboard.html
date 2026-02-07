@@ -25,10 +25,10 @@
           <input name="codigo" placeholder="Codigo" type="text" required>
           <input name="marca" placeholder="Marca do produto" type="text" required>
           <input name="categoria" placeholder="Categoria" type="text" required>
+          <input type="number" name="price" placeholder="Preço" required min="0" step="0.01">
           <input name="qty" type="number" placeholder="Quantidade" required min="0" value="0">
           <button type="submit">Adicionar</button>
       </form>
-
     </section>
 
     <section class="card" id="list-prod">
@@ -38,28 +38,32 @@
             <li class="item">
               <div class="qtd">
                 <p class="titulo">Produto:</p>
-                <p  class="res">{{ p["name"] }}</p>
+                {{ p["name"] }}
               </div>
 
               <div class="qtd">
                 <p class="titulo">Código:</p>
-                <p  class="res">{{ p["codigo"] }}</p>
+                {{ p["codigo"] }}
               </div>
 
               <div class="qtd">
                 <p class="titulo">Marca:</p>
-                <p  class="res">{{ p["marca"] }}</p>
+                {{ p["marca"] }}
               </div>
 
               <div class="qtd">
                 <p class="titulo">Categoria:</p>
-                <p  class="res">{{ p["categoria"] }}</p>
+                {{ p["categoria"] }}
               </div>
 
+              <div class="qtd">
+                <p class="titulo">Preço:</p>
+                R$ {{ p["price"] }}
+              </div>
 
               <div class="qtd">
                 <p class="titulo">Quantidade:</p>
-                <p class="res">{{ p["quantity"] }}</p>
+                {{ p["quantity"] }}
               </div>
               <div class="acoes">
                 <form action="/remove/{{ p['id'] }}" method="post">
@@ -69,6 +73,16 @@
           </li>
           {% endfor %}
         </ul>
+    </section>
+    <section class="card" id="card-relatorio">
+      <h3>Relatório</h3>
+      <p>Total de produtos: {{ total_products }}</p>
+      <p>Total de categorias: {{ total_categories }}</p>
+    </section>
+
+    <section class="card" id="card-gast">
+      <h3>Gastos:</h3>
+      <p>Total gasto: R$ {{ '%.2f'|format(total_spent) }}</p>
     </section>
   </main>
   <footer>

@@ -58,37 +58,41 @@ body{
 /* ===== Layout principal ===== */
 main{
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 18px;
-  padding: 18px;
-  min-height: calc(100vh - 95px);
+  grid-template-columns: 1fr 100px;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 10px;
+  min-height: calc(100vh - 116px);
   background: #f6f6fb;
-}
-
-/* Em telas maiores: form à esquerda, lista à direita */
-@media screen and (min-width: 900px){
-  main{
-    grid-template-columns: 380px 1fr;
-    align-items: start;
-  }
-
-  #pesq{ grid-column: 1; }
-  #list-prod{ grid-column: 2; }
 }
 
 /* ===== Cards ===== */
 .card {
   width: 100%;
-  background: #fff;
-  padding: 18px;
-  border-radius: 16px;
+  background: #ddddddb7;
+  padding: 10px;
+  border-radius: 5px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-  margin: 0; /* tira o "auto" que atrapalha o grid */
 }
 
 #pesq{
   display: flex;
   flex-direction: column;
+  grid-column: 1 / -1;
+}
+
+#list-prod{
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / -1;
+}
+
+#card-relatorio{
+  grid-column: 1 / 2;
+} 
+
+#card-gast{
+  grid-column: 2 / 3;
 }
 
 #pesq h3, #list-prod h3{
@@ -98,7 +102,7 @@ main{
 /* ===== Form ===== */
 .row{
   display: grid;
-  grid-template-columns: 1fr 160px; /* coluna direita fixa */
+  grid-template-columns: 1fr 160px; 
   gap: 12px;
 }
 
@@ -161,20 +165,18 @@ button:hover {
 /* ===== Lista ===== */
 .list {
   list-style: none; 
-  padding: 0; 
-  margin: 0;
-  max-height: 58vh;
+  height: 100%;
   overflow-y: auto; 
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 /* Item do produto */
 .item{
   background: #fafafa;
   border: 1px solid #ececf2;
-  border-radius: 14px;
+  border-radius: 8px;
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -267,4 +269,19 @@ footer p a:hover{
     justify-self: stretch;
     width: 100%;
   }
+}
+
+/* Em telas maiores: form à esquerda, lista à direita */
+@media screen and (min-width: 900px){
+  main{
+    grid-template-columns: 380px 1fr;
+    align-items: start;
+  }
+
+  #pesq{
+     grid-column: 1; 
+    }
+  #list-prod{
+     grid-column: 2; 
+    }
 }
