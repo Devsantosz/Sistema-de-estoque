@@ -14,7 +14,14 @@ O sistema permite adicionar produtos e visualizar a lista de itens cadastrados n
 </ul>
 
 ## Imagem do Projeto:
-<img src="estoque-loja.png">
+
+### Tela de login:
+
+<img src="login.png">
+
+### Estoque:
+
+<img src="estoque.png">
 
 ## 📌 Funcionalidades
 
