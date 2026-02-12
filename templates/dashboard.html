@@ -19,14 +19,14 @@
 
   <main class="container">
     <section class="card" id="pesq">
-      <h3>Adicionar produto</h3>
+      <h3>Adicionar produto:</h3>
       <form method="post" action="/add" class="row">
           <input name="name" placeholder="Nome do produto" required>
           <input name="codigo" placeholder="Codigo" type="text" required>
           <input name="marca" placeholder="Marca do produto" type="text" required>
           <input name="categoria" placeholder="Categoria" type="text" required>
           <input type="number" name="price" placeholder="Preço" required min="0" step="0.01">
-          <input name="qty" type="number" placeholder="Quantidade" required min="0" value="0">
+          <input name="qty" type="number" placeholder="Quantidade" required min="0" >
           <button type="submit">Adicionar</button>
       </form>
     </section>
@@ -76,18 +76,27 @@
     </section>
     <section class="card" id="card-relatorio">
       <h3>Relatório</h3>
-      <p>Total de produtos: {{ total_products }}</p>
-      <p>Total de categorias: {{ total_categories }}</p>
+      <div class="rel">
+          <p>Total de produtos: </p>
+          <p>{{ total_products }}</p>
+      </div>
+      <div class="rel">
+        <p>Total de categorias: </p>
+        <p>{{ total_categories }}</p>
+      </div>
     </section>
 
     <section class="card" id="card-gast">
       <h3>Gastos:</h3>
-      <p>Total gasto: R$ {{ '%.2f'|format(total_spent) }}</p>
+      <div class="rel">
+        <p>Total gasto: </p>
+        <p>R$ {{ '%.2f'|format(total_spent) }}</p>
+      </div>
     </section>
   </main>
   <footer>
     <p>Sistema de estoque com HTML,CSS,PYTHON e SQlite.</p>
-    <p>Desenvolvido por <a href="https://github.com/Devsantosz" target="_blank">DEVSANTOSZ </a>&copy</p>
+    <p><a href="https://github.com/Devsantosz" target="_blank">DEVSANTOSZ </a>&copy</p>
   </footer>
 </body>
 </html>
