@@ -17,11 +17,11 @@ O sistema permite adicionar produtos e visualizar a lista de itens cadastrados n
 
 ### Tela de login:
 
-<img src="login.png">
+<img src="static/tela-login.png">
 
 ### Estoque:
 
-<img src="estoque.png">
+<img src="static/estoque.png">
 
 ## 📌 Funcionalidades
 
