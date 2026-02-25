@@ -1,10 +1,11 @@
 import os
 import sqlite3
 import bcrypt
-from flask import Flask, render_template, request, redirect, session
+from functools import wraps
+from flask import Flask, render_template, request, redirect, session, flash
 
 app = Flask(__name__)
-app.secret_key = "troque-por-uma-chave-forte"
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "DEV_ONLY_troque-isso")
 DB_PATH = "data/app.db"
 
 
@@ -16,43 +17,47 @@ def get_db():
 
 
 def init_db():
-    con = get_db()
-    cur = con.cursor()
+    with get_db() as con:
+        cur = con.cursor()
 
-    # USERS
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT NOT NULL UNIQUE,
-            password_hash BLOB NOT NULL
-        );
-    """)
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL UNIQUE,
+                password_hash BLOB NOT NULL
+            );
+        """)
 
-    # PRODUCTS (com price)
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS products (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            codigo TEXT NOT NULL UNIQUE,
-            marca TEXT NOT NULL,
-            categoria TEXT NOT NULL,
-            price REAL NOT NULL DEFAULT 0,
-            quantity INTEGER NOT NULL DEFAULT 0
-        );
-    """)
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS products (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                codigo TEXT NOT NULL UNIQUE,
+                categoria TEXT NOT NULL,
+                price REAL NOT NULL DEFAULT 0,
+                quantity INTEGER NOT NULL DEFAULT 0,
+                stqmin INTEGER NOT NULL DEFAULT 0
+            );
+        """)
 
-    # Migração: se a tabela antiga não tiver "price", adiciona
-    cur.execute("PRAGMA table_info(products)")
-    cols = [r["name"] for r in cur.fetchall()]
-    if "price" not in cols:
-        cur.execute("ALTER TABLE products ADD COLUMN price REAL NOT NULL DEFAULT 0")
+        # migrações seguras
+        cur.execute("PRAGMA table_info(products)")
+        cols = [r["name"] for r in cur.fetchall()]
 
-    con.commit()
-    con.close()
+        if "price" not in cols:
+            cur.execute("ALTER TABLE products ADD COLUMN price REAL NOT NULL DEFAULT 0")
+        if "stqmin" not in cols:
+            cur.execute("ALTER TABLE products ADD COLUMN stqmin INTEGER NOT NULL DEFAULT 0")
 
 
-def require_login():
-    return "user_id" in session
+def login_required(fn):
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        if "user_id" not in session:
+            flash("Faça login para continuar.", "warning")
+            return redirect("/")
+        return fn(*args, **kwargs)
+    return wrapper
 
 
 @app.get("/")
@@ -66,24 +71,22 @@ def register():
     password = request.form.get("password", "").strip()
 
     if not username or not password:
+        flash("Preencha usuário e senha.", "warning")
         return redirect("/")
 
     pw_hash = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 
-    con = get_db()
-    cur = con.cursor()
     try:
-        cur.execute(
-            "INSERT INTO users (username, password_hash) VALUES (?, ?)",
-            (username, pw_hash)
-        )
-        con.commit()
+        with get_db() as con:
+            con.execute(
+                "INSERT INTO users (username, password_hash) VALUES (?, ?)",
+                (username, pw_hash)
+            )
+        flash("Conta criada! Agora faça login.", "success")
+        return redirect("/")
     except sqlite3.IntegrityError:
-        con.close()
-        return "Usuário já existe. Volte e escolha outro.", 400
-
-    con.close()
-    return "Conta criada! Agora faça login.", 200
+        flash("Esse usuário já existe. Escolha outro.", "danger")
+        return redirect("/")
 
 
 @app.post("/login")
@@ -91,20 +94,23 @@ def login():
     username = request.form.get("username", "").strip()
     password = request.form.get("password", "").strip()
 
-    con = get_db()
-    cur = con.cursor()
-    cur.execute(
-        "SELECT id, username, password_hash FROM users WHERE username = ?",
-        (username,)
-    )
-    user = cur.fetchone()
-    con.close()
+    if not username or not password:
+        flash("Preencha usuário e senha.", "warning")
+        return redirect("/")
+
+    with get_db() as con:
+        user = con.execute(
+            "SELECT id, username, password_hash FROM users WHERE username = ?",
+            (username,)
+        ).fetchone()
 
     if not user:
-        return "Login inválido.", 401
+        flash("Usuário ou senha inválidos.", "danger")
+        return redirect("/")
 
     if not bcrypt.checkpw(password.encode("utf-8"), user["password_hash"]):
-        return "Login inválido.", 401
+        flash("Usuário ou senha inválidos.", "danger")
+        return redirect("/")
 
     session["user_id"] = user["id"]
     session["username"] = user["username"]
@@ -112,113 +118,116 @@ def login():
 
 
 @app.get("/dashboard")
+@login_required
 def dashboard():
-    if not require_login():
-        return redirect("/")
+    with get_db() as con:
+        products = con.execute("""
+            SELECT id, name, codigo, categoria, price, quantity, stqmin
+            FROM products
+            ORDER BY id DESC
+        """).fetchall()
 
-    con = get_db()
-    cur = con.cursor()
+        total_products = con.execute(
+            "SELECT COUNT(*) AS total FROM products"
+        ).fetchone()["total"]
 
-    # Lista
-    cur.execute("""
-        SELECT id, name, codigo, marca, categoria, price, quantity
-        FROM products
-        ORDER BY id DESC
-    """)
-    products = cur.fetchall()
+        total_categories = con.execute(
+            "SELECT COUNT(DISTINCT categoria) AS total FROM products"
+        ).fetchone()["total"]
 
-    # Relatório
-    cur.execute("SELECT COUNT(*) AS total FROM products")
-    total_products = cur.fetchone()["total"]
+        # estoque baixo: quantity <= stqmin (e quantidade > 0, opcional)
+        value_estoque = con.execute("""
+            SELECT COUNT(*) AS total
+            FROM products
+            WHERE quantity > 0 AND quantity <= stqmin
+        """).fetchone()["total"]
 
-    cur.execute("SELECT COUNT(DISTINCT categoria) AS total FROM products")
-    total_categories = cur.fetchone()["total"]
-
-    # Total gasto (valor total do estoque)
-    cur.execute("SELECT COALESCE(SUM(price * quantity), 0) AS total FROM products")
-    total_spent = cur.fetchone()["total"]
-
-    con.close()
+        # gasto total (valor total do estoque)
+        gasto_estoque = con.execute(
+            "SELECT COALESCE(SUM(price * quantity), 0) AS total FROM products"
+        ).fetchone()["total"]
 
     return render_template(
         "dashboard.html",
-        username=session["username"],
+        username=session.get("username", ""),
         products=products,
         total_products=total_products,
         total_categories=total_categories,
-        total_spent=total_spent
+        value_estoque=value_estoque,
+        gasto_estoque=f"R$ {gasto_estoque:.2f}".replace(".", ",")
     )
 
 
-
 @app.post("/add")
+@login_required
 def add_product():
-    if not require_login():
-        return redirect("/")
-
     name = request.form.get("name", "").strip()
     codigo = request.form.get("codigo", "").strip()
-    marca = request.form.get("marca", "").strip()
     categoria = request.form.get("categoria", "").strip()
 
-    if not name or not codigo or not marca or not categoria:
+    if not all([name, codigo, categoria]):
+        flash("Preencha todos os campos do produto.", "warning")
         return redirect("/dashboard")
 
+    # qty
     try:
         qty = int(request.form.get("qty", 0))
     except ValueError:
         qty = 0
     qty = max(0, qty)
 
+    # price
     try:
         price = float(request.form.get("price", 0))
     except ValueError:
         price = 0.0
     price = max(0.0, price)
 
-    con = get_db()
-    cur = con.cursor()
+    # stqmin
+    try:
+        stqmin = int(request.form.get("stqmin", 0))
+    except ValueError:
+        stqmin = 0
+    stqmin = max(0, stqmin)
 
-    # Se o código já existir, atualiza (evita conflito do UNIQUE)
-    cur.execute("SELECT id, quantity FROM products WHERE codigo = ?", (codigo,))
-    p = cur.fetchone()
+    with get_db() as con:
+        cur = con.cursor()
+        existing = cur.execute(
+            "SELECT id, quantity FROM products WHERE codigo = ?",
+            (codigo,)
+        ).fetchone()
 
-    if p:
-        new_qty = p["quantity"] + qty
-        cur.execute("""
-            UPDATE products
-            SET name = ?, marca = ?, categoria = ?, price = ?, quantity = ?
-            WHERE id = ?
-        """, (name, marca, categoria, price, new_qty, p["id"]))
-    else:
-        cur.execute("""
-            INSERT INTO products (name, codigo, marca, categoria, price, quantity)
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, (name, codigo, marca, categoria, price, qty))
-
-    con.commit()
-    con.close()
+        if existing:
+            new_qty = existing["quantity"] + qty
+            cur.execute("""
+                UPDATE products
+                SET name = ?, categoria = ?, price = ?, quantity = ?, stqmin = ?
+                WHERE id = ?
+            """, (name, categoria, price, new_qty, stqmin, existing["id"]))
+            flash("Produto atualizado (quantidade somada).", "success")
+        else:
+            cur.execute("""
+                INSERT INTO products (name, codigo, categoria, price, quantity, stqmin)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (name, codigo, categoria, price, qty, stqmin))
+            flash("Produto adicionado.", "success")
 
     return redirect("/dashboard")
 
 
 @app.post("/remove/<int:prod_id>")
+@login_required
 def remove_product(prod_id):
-    if not require_login():
-        return redirect("/")
-
-    con = get_db()
-    cur = con.cursor()
-    cur.execute("DELETE FROM products WHERE id = ?", (prod_id,))
-    con.commit()
-    con.close()
-
+    with get_db() as con:
+        con.execute("DELETE FROM products WHERE id = ?", (prod_id,))
+    flash("Produto removido.", "success")
     return redirect("/dashboard")
 
 
 @app.get("/logout")
 def logout():
     session.clear()
+    flash("Você saiu da conta.", "success")
     return redirect("/")
 
 

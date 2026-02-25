@@ -8,16 +8,20 @@
 }
 
 body{ 
-  background: #f6f6fb;
+  background: #080808;
 }
 
 /* ===== Topo ===== */
 .topbar {
+
+
   text-align: center;
   color: #fff;
+  margin: 10px;
   padding: 10px;
-  background: linear-gradient(90deg, #5a189a, #7b2cbf);
-  border-bottom: none;
+  border: 1px solid rgb(110, 0, 153);
+  background-color: #07000800;
+  border-radius: 8px;
   display: flex;
 
   flex-flow: row nowrap;
@@ -63,12 +67,13 @@ main{
   gap: 10px;
   padding: 10px;
   min-height: calc(100vh - 96px);
-  background: #f6f6fb;
+  
 }
 
 /* ===== Cards ===== */
 .card {
-  background: #ddddddb7;
+  border: 1px solid rgb(110, 0, 153);
+  background-color: #07000800;
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.06);
@@ -77,6 +82,7 @@ main{
 #pesq{
   display: grid;
   grid-column: 1 / -1;
+  grid-row: 1;
 }
 
 #list-prod{
@@ -93,9 +99,10 @@ main{
   grid-column: 2 / 3;
 }
 
-#pesq h3, #list-prod h3{
+#pesq h3, #list-prod h3, #card-relatorio h3{
   margin-bottom: 5px;
-  text-align: center;
+  color: white;
+  text-align: left;
 }
 
 /* ===== Form ===== */
@@ -115,7 +122,6 @@ main{
 
 .row input[name="price"]{
   grid-column: 1;
-  
 }
 
 
@@ -125,26 +131,27 @@ main{
 
 /* Inputs */
 input {
-  height: 40px;
   grid-column: 1 / -1;
   width: 100%;
   padding: 10px;
   border: 1px solid #e6e6ee;
-  border-radius: 6px;
-  background: #f3f2f8;
-  outline: none;
+  border-radius: 3px;
+  background: #ffffff;
+
 }
 
 input:focus{
-  border: 1px solid #b363f825;
+  border: 1px solid #43008f25;
   box-shadow: 0 0 0 3px rgba(123,44,191,0.15);
-  background: #fff;
+  background: #00000070;
+  color: white;
+  transition: 1s;
 }
 
 /* Botão */
 button {
   grid-column: 2; 
-  padding: 10px 14px;
+  padding: 10px;
   border: 0;
   border-radius: 6px;
   cursor: pointer;
@@ -156,9 +163,8 @@ button {
 
 /* Botão do form alinhado no final e ocupando uma “célula” */
 #pesq .row button{
-  grid-column: 2; /* fica na direita */
   justify-self: end;
-  min-width: 140px;
+  min-width: 50%;
 }
 
 button:hover {
@@ -237,7 +243,7 @@ button:hover {
 
 /* Botão remover menor (fica mais elegante) */
 .item .acoes button{
-  padding: 12px;
+  padding: 10px;
   border-radius: 6px;
 }
 
@@ -246,48 +252,39 @@ button:focus-visible, input:focus-visible{
   outline-offset: 2px;
 }
 
+#card-relatorio{
+  grid-column: 1 / 3;
+}
+
+#resumo{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+
+}
+
 #card-relatorio p{
   text-align: center;
   font-weight: 600;
-  padding: 10px 0px;
 }
 
-#card-relatorio h3{
-  color: #5a189a;
-  text-align: center;
-  font-size: 1.2em;
-  font-weight: 700;
-}
+
 
 #card-relatorio p{
   text-align: center;
   font-size: 1em;
   font-weight: 600;
-  padding: 10px 0px;
+  
 }
 
 .rel{
-  height: max-content;
+  flex: auto;
   background-color: #f3f2f8;
   
-  justify-content: space-between;
-  border-radius: 8px;
-  margin: 10px 0px;
+  border-radius: 5px;
+  padding: 10px;
 }
 
-#card-gast h3{
-  color: #5a189a;
-  text-align: center;
-  font-size: 1.2em;
-  font-weight: 700;
-}
-
-#card-gast p{
-  text-align: center;
-  font-size: 1em;
-  font-weight: 600;
-  padding: 10px 0px;
-}
 
 
 /* ===== Footer ===== */
@@ -315,28 +312,60 @@ footer p a:hover{
 @media screen and (min-width: 768px){
   main{
     grid-template-columns: 380px 1fr;
+    grid-template-rows: auto auto 1fr;
     align-items: start;
   }
 
   #pesq{
-    grid-template-columns: auto;
-     grid-column: 1; 
-     grid-row: 1 / 2;
-     height: 100%;
-    }
+    grid-template-columns: repeat(3, 1fr);
+    grid-column: 1 / -1; 
+    grid-row: 1 / 2;
+    height: 100%;
+    transition: ease;
+  }
+
+  #pesq .row{
+    grid-column: 1 / -1;
+  }
+
+  #pesq .row input[name="name"]{
+    grid-column: 1 / 2;
+  }
+
+  #pesq .row input[name="codigo"]{
+    grid-column: 2 / 3;
+  }
+
+  #pesq .row input[name="categoria"]{
+    grid-column: 3 / 4;
+  }
+
+  #pesq .row input[name="categoria"]{
+    grid-column: 3 / 4;
+  }
+
+  #pesq .row input[name="stqmin"]{
+    grid-column: 3 / 4;
+  }
+
+  #pesq button{
+    grid-column: 3 / 4;
+  }
+
 
   #list-prod{
-     grid-column: 2; 
-     height: 100%;
-    }
+    grid-column: 1 / -1;
+    grid-row: 3; 
+    height: 100%;
+  }
 
-    #card-relatorio{
-      grid-column: 1;
-      height: 100%;
-    }
+  #card-relatorio{
+    
+    grid-column: 1 /-1;
+    height: 100%;
+  }
 
-    #card-gast{
-      grid-column: 1;
-      height: 100%;
-    }
+  #card-relatorio #resumo{
+    grid-template-columns: repeat(4, 1fr);
+  }
 }

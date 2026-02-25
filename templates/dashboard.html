@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="/static/style.css">
   <link rel="shortcut icon" href="../static/box.ico" type="image/x-icon">
-  <script src="https://kit.fontawesome.com/0be98ff33e.js" crossorigin="anonymous"></script>
   <title>Dashboard - Estoque</title>
 </head>
 <body>
   <header class="topbar">
-    <h2>ESTOQUE</h2>
+    <h2>Dashboard</h2>
     <div class="conta">
       <h1><i class="fa-solid fa-user"></i>{{ username }} </h1>
       <a href="/logout">Sair</a>
@@ -21,14 +20,39 @@
     <section class="card" id="pesq">
       <h3>Adicionar produto:</h3>
       <form method="post" action="/add" class="row">
-          <input name="name" placeholder="Nome do produto" required>
-          <input name="codigo" placeholder="Codigo" type="text" required>
-          <input name="marca" placeholder="Marca do produto" type="text" required>
+          <input name="name" placeholder="Produto" required>
+          <input name="codigo" placeholder="Code" type="text" required>
           <input name="categoria" placeholder="Categoria" type="text" required>
           <input type="number" name="price" placeholder="Preço" required min="0" step="0.01">
           <input name="qty" type="number" placeholder="Quantidade" required min="0" >
+          <input name="stqmin" type="number" placeholder="Est Min" required min="0" >
           <button type="submit">Adicionar</button>
       </form>
+    </section>
+
+    <section class="card" id="card-relatorio">
+      <h3>Relatório</h3>
+      <div id="resumo">
+        <div class="rel">
+            <p>Total de produtos: </p>
+            <p>{{ total_products }}</p>
+        </div>
+
+        <div class="rel">
+          <p>Categorias: </p>
+          <p>{{ total_categories }}</p>
+        </div>
+
+        <div class="rel">
+          <p>Estoque baixo: </p>
+          <p>{{ value_estoque }}</p>
+        </div>
+
+        <div class="rel">
+          <p>Gasto:</p>
+          <p>{{ gasto_estoque }}</p>
+        </div>
+      </div>
     </section>
 
     <section class="card" id="list-prod">
@@ -47,8 +71,8 @@
               </div>
 
               <div class="qtd">
-                <p class="titulo">Marca:</p>
-                {{ p["marca"] }}
+                <p class="titulo">Est. mínimo:</p>
+                {{ p["stqmin"] }}
               </div>
 
               <div class="qtd">
@@ -74,29 +98,17 @@
           {% endfor %}
         </ul>
     </section>
-    <section class="card" id="card-relatorio">
-      <h3>Relatório</h3>
-      <div class="rel">
-          <p>Total de produtos: </p>
-          <p>{{ total_products }}</p>
-      </div>
-      <div class="rel">
-        <p>Total de categorias: </p>
-        <p>{{ total_categories }}</p>
-      </div>
-    </section>
-
-    <section class="card" id="card-gast">
-      <h3>Gastos:</h3>
-      <div class="rel">
-        <p>Total gasto: </p>
-        <p>R$ {{ '%.2f'|format(total_spent) }}</p>
-      </div>
-    </section>
+    
   </main>
   <footer>
-    <p>Sistema de estoque com HTML,CSS,PYTHON e SQlite.</p>
-    <p><a href="https://github.com/Devsantosz" target="_blank">DEVSANTOSZ </a>&copy</p>
+    <p>
+      Sistema de estoque com HTML,CSS,PYTHON e SQlite.
+    </p>
+    <p><a href="https://github.com/Devsantosz" target="_blank">
+      DEVSANTOSZ </a>&copy
+    </p>
   </footer>
+
+  <script src="https://kit.fontawesome.com/0be98ff33e.js" crossorigin="anonymous"></script>
 </body>
 </html>
