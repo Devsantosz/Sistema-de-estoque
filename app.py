@@ -30,7 +30,7 @@ def init_db():
 
         cur.execute("""
             CREATE TABLE IF NOT EXISTS products (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id  ,
                 name TEXT NOT NULL,
                 codigo TEXT NOT NULL UNIQUE,
                 categoria TEXT NOT NULL,

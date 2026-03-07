@@ -13,32 +13,49 @@
             font-family: Arial, sans-serif;
         }
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
             background-image: url(../static/estoque.jpg);
+            box-shadow: inset -100px 0px 1000px rgba(0, 0, 0, 0.678);
             background-position: center center;
             background-size: cover;
             background-repeat: no-repeat;
         }
 
+        main{
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            justify-items: center;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
         .login-card {
+            grid-column: 2;
             background-color: rgba(255, 255, 255, 0.459);
             padding: 20px;
             border: 1px solid #00000033;
             border-radius: 5px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.959);
-            width: 300px;
+            
+            width: 70%; 
+            
+            display: flex;
+            flex-flow: column nowrap;
+
+            align-items: center;
+            justify-content: center;
         }
 
         .login-card h1{
+            font-size: 3em;
             text-align: center;
             margin-bottom: 20px;
             color: #000000;
         }
 
         .login-card label {
+            font-size: 1.4em;
             font-weight: 700;
             margin: auto;
             display: block;
@@ -46,6 +63,7 @@
         }
 
         .login-card input {
+            font-size: 1.4em;
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
@@ -54,8 +72,9 @@
         }
 
         .login-card button {
+            font-size: 1.3em;
             width: 100%;
-            padding: 10px;
+            padding: 20px;
             margin-bottom: 10px;
             background-color: #5a189a;
             color: white;
@@ -66,8 +85,24 @@
 
         .login-card button:hover {
             background-color: #000000;
-            transition: 0.4s;
+            transition: 0.5s;
         }
+
+        @media screen and (min-width: 798px){
+            body{
+                box-shadow: inset -100px 0px 1000px rgba(0, 0, 0, 0.849);
+            }
+            
+            main{
+                grid-template-columns: auto repeat(3,1fr) auto;
+            }
+            .login-card {
+                transition: ease 1s;
+                grid-column: 3/5;
+                width: 50%;  
+            }
+        }
+
     </style>
 </head>
 <body>
