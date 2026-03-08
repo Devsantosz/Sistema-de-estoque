@@ -83,36 +83,56 @@ body {
     color: white;
     text-decoration: none;
     font-size: 0.9em;
+
+    padding: 2px ;
+    border-radius: 4px;
+
+    transition: all 0.25s ease;
 }
 
 .conta a:hover {
-    text-decoration: underline;
+    background-color: var(--color01);
+    transform: translateY(-2px);
+    box-shadow: 0 0 10px var(--color01);
 }
 
 /* ===== LAYOUT ===== */
 
 main {
-    
+  
     max-width: 1100px;
-    height: calc(100vh - 125px);
+    min-height: calc(100vh - 125px);
     margin: auto;
 
-    display: flex;
-    flex-direction: column;
-    
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     gap: 20px;
+
 }
 
 /* ===== HERO ===== */
 
 .hero {
+    grid-column: 2 / 3;
     text-align: center;
-    padding-top: 40px;
+    
+    align-content: center;
+    padding: 30px;
+    height: calc(100vh - 50px);
+
+
 }
 
 .hero h1 {
-    font-size: 2.4rem;
+    text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.103);
+    margin: auto;
+    width: 90%;
+    font-size: 4.5rem;
     margin-bottom: 15px;
+}
+
+.hero h1 span {
+    color: yellow;
 }
 
 .hero p {
@@ -120,6 +140,7 @@ main {
     max-width: 600px;
     margin: auto;
     line-height: 1;
+    font-size: 1.6em;
 }
 
 .cta {
@@ -143,19 +164,75 @@ main {
 /* ===== FEATURES ===== */
 
 .features {
+    grid-column: 2 / 3;
     display: grid;
     gap: 20px;
-    max-width: 60%;
-    margin: auto;
+}
+
+/* PROBLEMA */
+
+.problema{
+    grid-column: 2 ;
+    border-top: 1px solid rgba(255, 255, 255, 0.377);
+    padding: 10px;
+}
+
+.problema h2{
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.grid-problema {
+    text-align: end;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.card-p{
+    background-color: rgba(255, 255, 255, 0.068);
+    border: 1px solid #5a189a;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.card-p p{
+    font-size: 1.2em;
+}
+
+
+#bad {
+    color: #ff5c5c;
+
+}
+
+#good {
+    color: #6cff8d;
+}
+
+/* STATS */
+
+.stats {
+    grid-column: 2;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.stats h3 {
+    font-size: 2rem;
+    color: #5a189a;
 }
 
 /* ===== CARD ===== */
 
-.card{
-    border: 1px solid var(--color01);
-    border-radius: 8px;
-    padding: 20px;
-    background: #07000859;
+.card {
+    background-color: rgba(255, 255, 255, 0.068);
+    border: 1px solid #5a189a;
+    padding: 25px;
+    border-radius: 10px;
 }
 
 .card h3 {
@@ -164,6 +241,7 @@ main {
 }
 
 .card p {
+    font-size: 1.2em;
     text-align: justify;
     color: #ccc;
     text-align: center;
@@ -173,6 +251,7 @@ main {
 /* ===== CADASTRO ===== */
 
 .cadastro {
+    grid-column: 2 / 3;
     max-width: 400px;
     margin: auto;
 }
@@ -210,7 +289,7 @@ footer {
     display: block;
     padding: 20px;
     text-align: center;
-    font-size: 0.9em;
+    font-size: 1em;
     background: #000;
 }
 
@@ -226,9 +305,7 @@ footer a:hover {
 /* ===== RESPONSIVO ===== */
 
 @media (min-width: 768px) {
-    
-    .features {
-        grid-template-columns: repeat(3, 1fr);
-        transition: ease 2s;
+    .conta a{
+        padding: 15px;
     }
 }

@@ -3,8 +3,8 @@
 
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="shortcut icon" href="src/static/sm.ico" type="image/x-icon">
+<meta name="description" content="Sistema simples para controle de estoque. Gerencie produtos, categorias e quantidades de forma rápida com o StockManager.">
+<link rel="icon" href="src/static/sm.ico">
 <link rel="stylesheet" href="src/style/landing.css">
 
 <title>StockManager</title>
@@ -14,27 +14,32 @@
     <h2>StockManager</h2>
 
     <div class="conta">
+        <a href="#topbar">Inicio</a>
+        <a href="#sistema">Sistema</a>
+        <a href="#cadastro">Cadrastro</a>
         <a href="/login">Login</a>
     </div>
 </header>
 <main>
 <!-- HERO -->
     <section class="hero">
-        <h1>
-            Controle seu estoque com facilidade
-        </h1>
-        <p>
-            Pare de perder vendas por falta de controle.
-        </p>
-        <p>
-            Organize seus produtos, categorias e quantidades em minutos.
-        </p>
-        <div class="cta">
-            <a href="#cadastro">Criar conta grátis</a>
+        <div class="container">
+            <h1>
+                Controle seu estoque com <span>facilidade</span>
+            </h1>
+            <p class="subtitle">
+                Pare de perder vendas por falta de controle e gerencie seu  estoque em minutos.
+            </p>
+            <div class="cta">
+                <a href="#cadastro">
+                    Criar conta grátis
+                </a>
+            </div>
         </div>
     </section>
+    </section>
 <!-- FEATURES -->
-    <section class="features">
+    <section class="features" id="sistema">
 
         <div class="card">
             <h3>Controle completo</h3>
@@ -63,15 +68,15 @@
 
     <h2>Problemas comuns no controle de estoque</h2>
 
-        <div class="grid-problema">
+        <div class="grid-problema" >
 
-            <div class="bad">
+            <div id="bad" class="card-p">
                 <p>❌ Planilhas confusas</p>
                 <p>❌ Falta de controle</p>
                 <p>❌ Produtos faltando</p>
             </div>
 
-            <div class="good">
+            <div id="good" class="card-p">
                 <p>✔ Sistema organizado</p>
                 <p>✔ Relatórios claros</p>
                 <p>✔ Controle em tempo real</p>
@@ -83,27 +88,34 @@
 
     <!-- ESTATISTICAS -->
 
-<section class="stats">
-    <div>
-        <h3>
-            +500
-        </h3>
-        <p>
-            Produtos gerenciados
-        </p>
-    </div>
+    <section class="stats">
+        <div>
+            <h3>
+                +500
+            </h3>
+            <p>
+                Produtos gerenciados
+            </p>
+        </div>
 
-    <div>
+        <div>
 
-        <h3>
-            100%
-        </h3>
-        <p>
-            Controle do estoque
-        </p>
-    </div>
-
-</section>
+            <h3>
+                100%
+            </h3>
+            <p>
+                Controle do estoque
+            </p>
+        </div>
+        <div>
+            <h3>
+                24h
+            </h3>
+            <p>
+                Acesso ao sistema
+            </p>
+        </div>
+    </section>
 <!-- CADASTRO -->
     <section class="card cadastro" id="cadastro">
 
@@ -111,7 +123,9 @@
 
         <form action="/register" method="post">
 
-            <input type="text" name="username" placeholder="Usuário" required>
+            <label for="username">Usuário</label>
+
+            <input id="username" type="text" name="username" placeholder="Usuário" required>
 
             <input type="email" name="email" placeholder="Email" required>
 
@@ -124,12 +138,16 @@
 </main>
 <footer>
 
-    <p>
-        Sistema de estoque com HTML, CSS, Python e SQLite
-        <a href="https://github.com/Devsantosz" target="_blank">
-            DEVSANTOSZ
-        </a>
-    </p>
+        <p>
+            © 2026 StockManager • Sistema de gestão de estoque
+        </p>
+
+        <p>
+            Desenvolvido por 
+            <a href="https://github.com/Devsantosz" target="_blank">
+            DevSantosz
+            </a>
+        </p>
 
 </footer>
 </body>
